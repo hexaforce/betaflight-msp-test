@@ -204,7 +204,8 @@ public:
 
 // 使用例
 int main() {
-    MSP msp("/dev/ttyACM0");
+    // MSP msp("/dev/ttyACM0");
+    MSP msp("/dev/cu.usbmodem3565375A34301");
     
     std::cout << "Betaflight MSP データ取得開始..." << std::endl;
     
