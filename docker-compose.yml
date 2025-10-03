@@ -1,0 +1,18 @@
+services:
+  betaflight-dev:
+    build: .
+    container_name: betaflight-msp
+    # USBデバイスをマウント
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0  # フライトコントローラのデバイス
+      # または
+      # - /dev/ttyUSB0:/dev/ttyUSB0
+    # 特権モードを有効化（USBアクセスに必要な場合）
+    privileged: true
+    volumes:
+      # ソースコードをマウント
+      - ./src:/workspace/src
+      - ./build:/workspace/build
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
