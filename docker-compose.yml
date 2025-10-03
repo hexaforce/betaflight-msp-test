@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  betaflight-dev:
+    build: .
+    container_name: betaflight-msp
+    # USBデバイスをマウント（macOS用）
+    devices:
+      - /dev/cu.usbmodem3565375A34301:/dev/ttyACM0
+    # 特権モードを有効化（USBアクセスに必要な場合）
+    privileged: true
+    volumes:
+      # ソースコードをマウント（編集可能）
+      - ./src:/workspace/src
+      - ./build:/workspace/build
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    # コンテナ起動時に自動コンパイル
+    command: >
+      bash -c "
+      echo '=== Betaflight MSP 開発環境 ===';
+      echo 'USBデバイス: /dev/ttyACM0 (ホスト: /dev/cu.usbmodem3565375A34301)';
+      echo '';
+      echo 'コンパイル実行中...';
+      g++ -o build/msp_reader src/msp_reader.cpp -std=c++11 -lpthread &&
+      echo 'コンパイル成功！' &&
+      echo '' &&
+      echo '実行方法:' &&
+      echo '  make run (ホスト側から)' &&
+      echo '  または' &&
+      echo '  ./build/msp_reader (コンテナ内から)' &&
+      echo '' &&
+      bash
+      "
